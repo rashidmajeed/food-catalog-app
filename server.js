@@ -33,6 +33,8 @@ const app = express();
 
 // create GraphiQl application
 app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }))
+
+// connect Schema with GraphQl
 app.use('/graphql', graphqlExpress({
     schema,
     context: {
