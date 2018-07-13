@@ -3,6 +3,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config({ path: 'variables.env'});
 
+// import models into our server
+const Food = require('./models/Food');
+const User = require('./models/User');
+
 // connect to mongodb database
 
 mongoose
