@@ -1,1 +1,1 @@
-exports.resolvers = {};
+exports.resolvers = {}
