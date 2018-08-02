@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
-require('dotenv').config({ path: 'variables.env'});
+const bodyParser = require('body-parser');
+require('dotenv').config({ path: 'variables.env' });
 
 // import models into our server
 const Food = require('./models/Food');
@@ -18,15 +19,15 @@ const { resolvers } = require('./reslovers');
 
 // creating a schema
 const schema = makeExecutableSchema({
-    typeDefs,
-    resolvers
+  typeDefs,
+  resolvers
 })
 
 // connect to mongodb database
 mongoose
-.connect(process.env.MONGO_URI)
-.then(() => console.log('DB is connected with the web application...'))
-.catch(err => console.error(err));
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log('DB is connected with the web application...'))
+  .catch(err => console.error(err));
 
 // Intializing application
 const app = express();
@@ -35,17 +36,18 @@ const app = express();
 app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }))
 
 // connect Schema with GraphQl
-app.use('/graphql', graphqlExpress({
+app.use('/graphql',
+  bodyParser.json(),
+  graphqlExpress({
     schema,
     context: {
-        Food,
-        User
+      Food,
+      User
     }
-
-}));
+  }));
 
 const PORT = process.env.PORT || 4444;
 
 app.listen(PORT, () => {
-    console.log(`Server is running on ${PORT}`);
+  console.log(`Server is running on ${PORT}`);
 })
