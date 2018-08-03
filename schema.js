@@ -21,12 +21,17 @@ type User {
     favorites: [Food]
 }
 
-
 type Query {
     getAllFood: [Food]
 }
 
+type Token {
+    token: String!
+}
+
 type Mutation {
     addFood(name: String!, category: String!, description: String!, instructions: String!, username: String): Food
+
+    signupUser(username: String!, email: String!, password: String!): Token 
 }
 `;
