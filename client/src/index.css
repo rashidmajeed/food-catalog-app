@@ -1,5 +1,80 @@
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+  background-color: rgb(255, 255, 255) !important;
+}
+
+/*home page styles*/
+
+.masthead {
+  background-image: linear-gradient(
+          135deg,
+          rgb(55, 218, 182) 0%,
+          rgb(10, 96, 99) 69%,
+          rgb(10, 96, 99) 89%
+  ) !important;
+}
+
+.masthead.segment {
+  min-height: 700px;
+  padding: 1em 0 !important;
+}
+
+.masthead .ui.menu .ui.button,
+.ui.menu a.ui.inverted.button {
+  margin-left: 0.5em;
+}
+
+.masthead h1.ui.header {
+  margin-top: 3em;
+  margin-bottom: 0;
+  font-size: 4em;
+  font-weight: normal;
+}
+
+.masthead h2 {
+  font-size: 1.7em;
+  font-weight: normal;
+}
+
+.footer.segment {
+  padding: 5em 0;
+}
+
+.secondary.inverted.pointing.menu {
+  border: none;
+}
+
+/*end home page styles*/
+
+/* navbar styles */
+
+.ui.menu .item img.logo {
+  margin-right: 2em;
+}
+
+.ui.fixed.menu {
+  background-image: linear-gradient(
+          135deg,
+          rgb(218, 115, 84) 0%,
+          rgb(166, 172, 201) 69%,
+          rgb(32, 167, 172) 89%
+  ) !important;
+}
+
+.ui.main.container,
+.main.segment {
+  margin-top: 9em;
+}
+
+.masthead .ui.menu .ui.button,
+.ui.menu a.ui.inverted.button {
+  height: 100%;
+  margin-left: 0.5em;
+}
+
+.ui.menu .item>img:not(.ui) {
+  margin-right: 1.5em !important;
+}
+
+.ui.menu:not(.vertical) .item>.button {
+  margin-left: 0.5em;
 }

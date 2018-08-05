@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const createToken = (user, secret, expiresIn) => {
   const { username, email } = user;
@@ -11,6 +12,18 @@ exports.resolvers = {
     getAllFood: async (root, args, { Food }) => {
       const allFood = await Food.find();
       return allFood;
+    },
+
+    getCurrentUser: async (root, args, { currentUser: User }) => {
+      if (!currentUser) {
+        return null;
+      }
+      const user = await User.findOne({ username: currentUser.username })
+        .populate({
+          path: 'favorites',
+          model: 'Food'
+        });
+      return user;
     }
   },
 
@@ -26,6 +39,18 @@ exports.resolvers = {
 
       return newFood;
 
+    },
+    // Mutation for the signIn for User
+    signinUser: async (root, { username, password }, { User }) => {
+      const user = await User.findOne({ username });
+      if (!user) {
+        throw new Error("User not found");
+      }
+      const isvalidPassword = await bcrypt.compare(password, user.password);
+      if (!isvalidPassword) {
+        throw new Error("Invalid Password");
+      }
+      return { token: createToken(user, process.env.SECRET, "1hr") };
     },
 
     // Mutation for the signup for User
