@@ -14,7 +14,7 @@ exports.resolvers = {
       return allFood;
     },
 
-    getCurrentUser: async (root, args, { currentUser: User }) => {
+    getCurrentUser: async (root, args, { currentUser, User }) => {
       if (!currentUser) {
         return null;
       }

@@ -49,14 +49,13 @@ app.use(async (req, res, next) => {
   if(token !== "null") {
     try {
       const currentUser = await jwt.verify(token, process.env.SECRET);
-      //console.log(currentUser);
+      console.log(currentUser);
       // passing current user into the graphql express middleware
       req.currentUser = currentUser;
     }
     catch (err){
       console.error(err);
     }
-  
   }
   next();
 });

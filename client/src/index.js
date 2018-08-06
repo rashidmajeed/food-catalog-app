@@ -9,23 +9,24 @@ import App from './components/App';
 import SignIn from './components/authentication/signIn';
 import SignUp from './components/authentication/signUp';
 import Homepage from './components/layout/homepage';
+import withSession from './components/withSession';
 
 
 const client = new ApolloClient({
 
   uri: 'http://localhost:4444/graphql',
-  
+
   fetchOptions: {
     credentials: 'include'
   },
   request: operation => {
     const token = localStorage.getItem('token');
     operation.setContext({
-    headers: {
-      authorization: token
-    }
-  })
-},
+      headers: {
+        authorization: token
+      }
+    })
+  },
   onError: ({ networkError }) => {
     if (networkError) {
 
@@ -36,25 +37,30 @@ const client = new ApolloClient({
       }*/
     }
   }
-  
+
 });
 
 // Stateless function for routing
-const Root = () => (
+const Root = ({ refetch }) => (
   <Router>
     <Switch>
       <Route path="/" exact component={Homepage} />
-      <Route path="/food" component={App} />
-      <Route path="/signin" component={SignIn} />
-      <Route path="/signup" component={SignUp} />
+      <Route path="/home" component={App} />
+      <Route path="/signin" render={() => <SignIn refetch={refetch} />} /> 
+      <Route path="/signup" render={() => <SignUp refetch={refetch} />} />
       <Redirect to="/" />
     </Switch>
   </Router>
 );
 
+
+// wrap all components with withSession components
+const RootWithSession = withSession(Root);
+
+
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <Root />
+    <RootWithSession />
   </ApolloProvider>,
   document.getElementById('root'));
 

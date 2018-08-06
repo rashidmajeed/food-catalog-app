@@ -2,9 +2,10 @@ import React from 'react';
 import { Mutation } from "react-apollo";
 import { SIGNIN_USER } from "../../queries";
 import Error from '../Error';
+import { withRouter } from 'react-router-dom';
 import { HashLink as Link } from 'react-router-hash-link';
-import { Button, Form, Grid, Header, Segment, Message }
-  from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Segment, Message } from 'semantic-ui-react'
+
 
 const initialState = {
   username: "",
@@ -12,7 +13,6 @@ const initialState = {
 }
 
 class SignIn extends React.Component {
-
   state = { ...initialState };
 
   clearState = () => {
@@ -26,10 +26,12 @@ class SignIn extends React.Component {
 
   handleSubmit = (event, signinUser) => {
     event.preventDefault();
-    signinUser().then(({ data }) => {
+    signinUser().then(async ({ data }) => {
       console.log(data);
       localStorage.setItem('token', data.signinUser.token);
+      await this.props.refetch();
       this.clearState();
+      this.props.history.push('/home');
     });
   };
 
@@ -39,11 +41,9 @@ class SignIn extends React.Component {
     return isInvalid;
   }
 
-
   render() {
     const { username, password } = this.state;
     return (
-
       <div className='signin-form'>
         {/*
       Heads up! The styles below are necessary for the correct render of this example.
@@ -67,7 +67,6 @@ class SignIn extends React.Component {
             <Mutation mutation={SIGNIN_USER} variables={{ username, password }} >
               {/*Wrap with the render props*/}
               {(signinUser, { data, loading, error }) => {
-
                 return (
                   <Form size='large' onSubmit={event => this.handleSubmit(event, signinUser)} >
                     <Segment stacked>
@@ -87,20 +86,18 @@ class SignIn extends React.Component {
                 </Button>
                     </Segment>
                     <Message>
-              New to us? <Link to="/signup">SignUp</Link>
+                      New to us? <Link to="/signup">SignUp</Link>
                     </Message>
                     {error && <Error error={error} />}
                   </Form>
                 )
               }}
-
             </Mutation>
             {/*End Mutation component to Signin Component*/}
           </Grid.Column>
         </Grid>
       </div>
-
     );
   }
 }
-export default SignIn
+export default withRouter(SignIn)

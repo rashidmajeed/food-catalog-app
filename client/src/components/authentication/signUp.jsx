@@ -1,10 +1,9 @@
 import React from 'react';
+import {  withRouter } from 'react-router-dom';
 import { Mutation } from "react-apollo";
 import { SIGNUP_USER } from "../../queries";
 import Error from '../Error';
-
-import { Button, Form, Grid, Header, Segment }
-  from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Segment } from 'semantic-ui-react';
 
 const initialState = {
     username: "",
@@ -28,11 +27,12 @@ class SignUp extends React.Component {
 
   handleSubmit = (event, signupUser) => {
     event.preventDefault();
-    signupUser().then(data => {
+    signupUser().then(async ({ data }) => {
       console.log(data);
       localStorage.setItem('token', data.signupUser.token);
-
+      await this.props.refetch();
       this.clearState();
+      this.props.history.push('/home');
     });
   };
 
@@ -115,4 +115,4 @@ class SignUp extends React.Component {
     );
   }
 }
-export default SignUp
+export default withRouter(SignUp);
